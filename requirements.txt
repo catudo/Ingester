@@ -1,0 +1,12 @@
+Django==4.1.12
+djangorestframework
+environs
+djongo
+pytz
+praw
+celery
+transformers
+torch
+tensorflow
+tf-keras
+sqlparse==0.2.4
