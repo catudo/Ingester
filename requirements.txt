@@ -4,9 +4,10 @@ environs
 djongo
 pytz
 praw
-celery
 transformers
 torch
 tensorflow
 tf-keras
 sqlparse==0.2.4
+python-keycloak
+djangorestframework-simplejwt
