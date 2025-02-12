@@ -1,6 +1,8 @@
 import praw
 from prawcore.exceptions import NotFound, PrawcoreException
 from transformers import pipeline
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 pipe = pipeline("text-classification", model="tabularisai/multilingual-sentiment-analysis")
 from Ingester.models import Comments
 
@@ -10,7 +12,7 @@ reddit = praw.Reddit(
     user_agent='Ingester'
 )
 
-
+@permission_classes([IsAuthenticated])
 def retrieve_from_reddit(subreddit, subject, user, count=100):
     try:
         subreddit = reddit.subreddit(subreddit)

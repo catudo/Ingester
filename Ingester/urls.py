@@ -16,7 +16,7 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
-from .views import IngestView, UserLoginView
+from .views import IngestView, UserRegister
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -26,8 +26,12 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     #    path('admin/', admin.site.urls),
     path('ingest/', IngestView.as_view()),
-    path('create_user', UserLoginView.as_view(),name='create_user'),
+    path('create_user', UserRegister.as_view(),name='create_user'),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('api/token/verify/', TokenObtainPairView.as_view(), name='token_verify'),
+
+
 ]

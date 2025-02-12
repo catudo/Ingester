@@ -32,3 +32,11 @@ class UserLoginView(APIView):
             return Response({'token': token.key})
         else:
             return Response({'error': 'Invalid credentials'}, status=401)
+
+class UserRegister(APIView):
+    permission_classes = [permissions.AllowAny]
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
