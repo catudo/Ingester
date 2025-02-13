@@ -6,15 +6,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserApi
-        fields = ('username', 'email', 'password')
+        fields = ['username', 'email', 'password']  # Add other fields as needed
+        extra_kwargs = {'password': {'write_only': True}}  # Make password write-only
 
     def create(self, validated_data):
         user = UserApi(
-            username=validated_data['username'],
-            email=validated_data.get('email', ''),
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            name=validated_data['username'],
+            email=validated_data['email'],
         )
-        user.set_password(validated_data['password'])
+        user.set_password(validated_data['password'])  # Use set_password to hash the password
         user.save()
         return user
+

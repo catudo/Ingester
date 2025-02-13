@@ -1,11 +1,11 @@
 from rest_framework import status
+
+
 from .retrieve_from_reddit import retrieve_from_reddit
 
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate
 
 from .serializer import UserSerializer
 
@@ -24,19 +24,16 @@ class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
-class UserLoginView(APIView):
-    def post(self, request):
-        user = authenticate(username=request.data['username'], password=request.data['password'])
-        if user:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key})
-        else:
-            return Response({'error': 'Invalid credentials'}, status=401)
 
 class UserRegister(APIView):
     permission_classes = [permissions.AllowAny]
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
+        if serializer.is_valid():
+            user = serializer.create(request.data)  # This will call the create method in the serializer
+            return Response(
+                {"message": "User created successfully.", "user_id": str(user.id)},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
